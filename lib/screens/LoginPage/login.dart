@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import './singup.dart';
+import 'singup.dart';
 import 'package:flutter/gestures.dart';
 
 
@@ -66,8 +66,8 @@ class Login extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Image.network(
-                      'https://a57.foxnews.com/static.foxnews.com/foxnews.com/content/uploads/2020/06/896/500/TESLA-LOGO.jpg?ve=1&tl=1',
+                    Image.asset(
+                      'assets/images/abstergo_industries_logo.png',
                       // height: 60,
                     ),
                     const SizedBox(height: 20),
