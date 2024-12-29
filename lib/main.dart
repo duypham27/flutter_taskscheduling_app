@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/homepage.dart';
-import 'screens/profilepage.dart';
+import 'package:flutter_taskscheduling_app/screens/HomePage/homepage.dart';
+import 'package:flutter_taskscheduling_app/screens/ProfilePage/profilepage.dart';
 import 'screens/qrcode.dart';
 import 'package:get/get.dart';
 
