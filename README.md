@@ -1,16 +1,35 @@
-# flutter_taskscheduling_app
+<h1 align="center"> Trường đại học Công nghệ thành phố Hồ Chí Minh <br/>
+    Đồ án môn học lập trình ứng dụng di động Flutter - 
+    Ứng Dụng Quản Lý Công Việc Abstergo
+</h1>
 
-A new Flutter project.
+<h1 align ="center"> Chào mừng đến với Abstergo Industries</h1>
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# [**Lời mở đầu**](#lời-mở-đầu)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Tên nhóm : Abstergo
+
+Thành viên nhóm:
+
+|STT|Tên|MSVV|
+|---|---|----|
+|1|Nguyễn Quốc Anh Quân|2180609238|
+|2|Phạm Bạch An Duy|2180609186|
+|3|Nguyễn Minh Hoàng|2180609315|
+
+
+Đồ án gồm :
+* [**API**](https://github.com/QuanNguyenD/API_Mobile)
+* [**Ứng dụng Flutter**](https://github.com/duypham27/flutter_taskscheduling_app)
+
+Mô tả sơ lược đồ án:
+
+**API** : 
+
+
+
+
+**Ứng dụng Flutter** 
