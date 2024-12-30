@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'singup.dart';
+import 'signup.dart';
 import 'package:flutter/gestures.dart';
 
 

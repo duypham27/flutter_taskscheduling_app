@@ -5,8 +5,7 @@ import 'package:flutter_taskscheduling_app/screens/HomePage/homepage.dart';
 import 'package:flutter_taskscheduling_app/screens/ProfilePage/profilepage.dart';
 import 'screens/qrcode.dart';
 import 'package:flutter_taskscheduling_app/screens/LoginPage/login.dart';
-import 'package:flutter_taskscheduling_app/screens/LoginPage/singup.dart';
-
+import 'package:flutter_taskscheduling_app/screens/LoginPage/signup.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,13 +16,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp( // Sử dụng GetMaterialApp thay vì MaterialApp
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const Login(),
+      initialRoute: '/login', // Đặt trang khởi động là /login
+      getPages: [
+        GetPage(name: '/login', page: () => const Login()),
+        GetPage(name: '/signup', page: () => const RegistrationPage()),
+        GetPage(name: '/home', page: () => const HomeContent()),
+        GetPage(name: '/qrcode', page: () => const QRCodePage()),
+        GetPage(name: '/profile', page: () => const ProfilePage()),
+      ],
     );
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'login.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter_taskscheduling_app/models/user.dart';
+import 'package:flutter_taskscheduling_app/services/APIServices.dart';
 
 
 class RegistrationController extends GetxController {
@@ -9,16 +11,48 @@ class RegistrationController extends GetxController {
   var email = ''.obs;
   var password = ''.obs;
 
-  void register() {
-    // Xử lý logic đăng ký,
+  // Thêm trạng thái để theo dõi việc tải dữ liệu
+  var isLoading = false.obs;
+  var errorMessage = ''.obs;
+
+  Future<void> register() async {
     if (name.isNotEmpty && email.isNotEmpty && password.isNotEmpty) {
-      Get.snackbar(
-        "Thành công",
-        "Đăng ký thành công!",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
+      isLoading.value = true;
+      errorMessage.value = '';
+
+      // Tạo đối tượng UserModel từ dữ liệu nhập vào
+      final user = UserModel(
+        id: 0,  // ID sẽ được tạo tự động từ API nếu cần
+        email: email.value,
+        username: name.value,
+        createdAt: "",  // Nếu API yêu cầu các trường này, có thể điền
+        updatedAt: "",
       );
+
+
+      try {
+        // Gọi API đăng ký
+        final result = await ApiService().signup(user,password.value);
+
+        if (result['result'] == 1) {
+          // Thông báo thành công và điều hướng
+          Get.snackbar(
+            "Thành công",
+            "Đăng ký thành công!",
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: Colors.green,
+            colorText: Colors.white,
+          );
+          // Chuyển đến trang đăng nhập hoặc trang khác sau khi đăng ký thành công
+          Get.toNamed('/login');
+        } else {
+          errorMessage.value = result['msg'] ?? 'Đăng ký không thành công!';
+        }
+      } catch (e) {
+        errorMessage.value = "Lỗi kết nối: $e";
+      } finally {
+        isLoading.value = false;
+      }
     } else {
       Get.snackbar(
         "Lỗi",
@@ -61,24 +95,9 @@ class RegistrationPage extends StatelessWidget {
                   labelText: "Tên",
                   labelStyle: TextStyle(
                     color: Color(0xFFC9B5A6), // Màu chữ Email
-
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: const Color(0xFFFF3131), // Màu cam cho border khi focus
-                      width: 1.3,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: const Color(0xFFFF3131), // Màu cam cho border khi không focus
-                      width: 1.0,
-                    ),
                   ),
                 ),
               ),
@@ -92,20 +111,6 @@ class RegistrationPage extends StatelessWidget {
                   ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: const Color(0xFFFF3131), // Màu cam cho border khi focus
-                      width: 1.3,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: const Color(0xFFFF3131), // Màu cam cho border khi không focus
-                      width: 1.0,
-                    ),
                   ),
                 ),
               ),
@@ -121,45 +126,45 @@ class RegistrationPage extends StatelessWidget {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: const Color(0xFFFF3131), // Màu cam cho border khi focus
-                      width: 1.3,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
-                    borderSide: BorderSide(
-                      color: const Color(0xFFFF3131), // Màu cam cho border khi không focus
-                      width: 1.0,
-                    ),
-                  ),
                 ),
               ),
               const SizedBox(height: 40),
-              ElevatedButton(
-                onPressed: controller.register,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.redAccent,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 100,
-                    vertical: 16,
+              Obx(() {
+                return controller.isLoading.value
+                    ? CircularProgressIndicator() // Hiển thị vòng tròn tải nếu đang gửi yêu cầu
+                    : ElevatedButton(
+                  onPressed: controller.register,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 100,
+                      vertical: 16,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                    ),
                   ),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
+                  child: const Text(
+                    "Đăng Ký",
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
-                ),
-                child: const Text(
-                  "Đăng Ký",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
-                ),
-              ),
+                );
+              }),
+              const SizedBox(height: 16),
+              Obx(() {
+                if (controller.errorMessage.isNotEmpty) {
+                  return Text(
+                    controller.errorMessage.value,
+                    style: TextStyle(color: Colors.red),
+                  );
+                }
+                return SizedBox.shrink();
+              }),
               const SizedBox(height: 16),
               GestureDetector(
                 onTap: () {
-                  // Điều hướng đến màn hình đăng ký
-                  Get.snackbar("Thông báo", "Điều hướng đến màn hình đăng ký.");
+                  // Điều hướng đến màn hình đăng nhập
+                  Get.snackbar("Thông báo", "Điều hướng đến màn hình đăng nhập.");
                 },
                 child: Text.rich(
                   TextSpan(
@@ -178,8 +183,6 @@ class RegistrationPage extends StatelessWidget {
                               MaterialPageRoute(builder: (context) => const Login()),
                             );
                           },
-
-
                       ),
                     ],
                   ),
