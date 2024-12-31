@@ -5,6 +5,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_taskscheduling_app/services/APIServices.dart';
 import 'package:flutter_taskscheduling_app/screens/HomePage/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_taskscheduling_app/main.dart';
 
 class LoginController extends GetxController {
   var email = ''.obs;
@@ -38,7 +39,7 @@ class LoginController extends GetxController {
         );
 
         // Điều hướng về HomePage
-        Get.off(() => const HomeContent());
+        Get.off(() => const MainNavigation());
       } else {
         Get.snackbar(
           "Lỗi",
