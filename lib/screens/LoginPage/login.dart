@@ -2,25 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'signup.dart';
 import 'package:flutter/gestures.dart';
-
-
+import 'package:flutter_taskscheduling_app/services/APIServices.dart';
+import 'package:flutter_taskscheduling_app/screens/HomePage/homepage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
-
   var email = ''.obs;
   var password = ''.obs;
 
-  void login() {
-    // Xử lý logic đăng ký,
-    if (email.isNotEmpty && password.isNotEmpty) {
-      Get.snackbar(
-        "Thành công",
-        "Đăng nhap thành công!",
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.green,
-        colorText: Colors.white,
-      );
-    } else {
+  Future<void> login() async {
+    if (email.value.isEmpty || password.value.isEmpty) {
       Get.snackbar(
         "Lỗi",
         "Vui lòng điền đầy đủ thông tin!",
@@ -28,9 +19,47 @@ class LoginController extends GetxController {
         backgroundColor: Colors.red,
         colorText: Colors.white,
       );
+      return;
     }
+
+    // Gửi yêu cầu đến API
+    ApiService().login(email.value, password.value).then((response) async {
+      if (response['result'] == 1) {
+        // Lưu accessToken
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('accessToken', response['accessToken']);
+
+        Get.snackbar(
+          "Thành công",
+          response['msg'] ?? "Đăng nhập thành công!",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+
+        // Điều hướng về HomePage
+        Get.off(() => const HomeContent());
+      } else {
+        Get.snackbar(
+          "Lỗi",
+          response['msg'] ?? "Đăng nhập thất bại!",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    }).catchError((error) {
+      Get.snackbar(
+        "Lỗi",
+        "Đã xảy ra lỗi: $error",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    });
   }
 }
+
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -52,17 +81,6 @@ class Login extends StatelessWidget {
               Container(
                 width: 350,
                 padding: const EdgeInsets.all(20),
-                // decoration: BoxDecoration(
-                //   color: Colors.white,
-                //   borderRadius: BorderRadius.circular(15),
-                //   boxShadow: [
-                //     BoxShadow(
-                //       color: Colors.black26,
-                //       blurRadius: 10,
-                //       offset: Offset(0, 5),
-                //     ),
-                //   ],
-                // ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -81,6 +99,9 @@ class Login extends StatelessWidget {
                     ),
                     const SizedBox(height: 50),
                     TextField(
+                      onChanged: (value) {
+                        login.email.value = value; // Cập nhật giá trị email
+                      },
                       decoration: InputDecoration(
                         labelText: 'Email',
                         labelStyle: TextStyle(
@@ -109,6 +130,9 @@ class Login extends StatelessWidget {
                     const SizedBox(height: 15),
                     TextField(
                       obscureText: true,
+                      onChanged: (value) {
+                        login.password.value = value; // Cập nhật giá trị password
+                      },
                       decoration: InputDecoration(
                         labelText: 'Mật khẩu',
                         labelStyle: TextStyle(
@@ -152,7 +176,8 @@ class Login extends StatelessWidget {
                     const SizedBox(height: 20),
                     ElevatedButton(
                       onPressed: () {
-                        // Hành động khi nhấn nút "Đăng Nhập"
+                        final loginController = Get.find<LoginController>();
+                        loginController.login(); // Gọi phương thức login từ instance
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red.shade400,
