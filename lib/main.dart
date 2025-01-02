@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter_taskscheduling_app/screens/HomePage/homepage.dart';
+import 'package:flutter_taskscheduling_app/screens/HomePage/createurgentevents.dart';
 import 'package:flutter_taskscheduling_app/screens/ProfilePage/profilepage.dart';
 import 'screens/qrcode.dart';
 import 'package:flutter_taskscheduling_app/screens/LoginPage/login.dart';
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp( // Sử dụng GetMaterialApp thay vì MaterialApp
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Abstergo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -58,17 +60,58 @@ class _MainNavigationState extends State<MainNavigation> {
 
   @override
   Widget build(BuildContext context) {
+    // Xác định tên trang cho các AppBar
+    String appBarTitle = '';
+    if (_selectedIndex == 0) {
+      appBarTitle = 'Trang chủ';
+    } else if (_selectedIndex == 1) {
+      appBarTitle = 'QR Code';
+    } else if (_selectedIndex == 2) {
+      appBarTitle = 'Tài khoản';
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("PSP, MEX, PSM"),
-        backgroundColor: Colors.redAccent,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_active),
+        title: _selectedIndex == 0
+            ? Image.asset(
+          'assets/images/abstergo_banner.png',
+          height: 40,
+          fit: BoxFit.contain,
+        )
+            : Text(appBarTitle), // Hiển thị tên trang cho các trang còn lại
+        backgroundColor: Colors.white,
+        actions: _selectedIndex == 0
+            ? [
+          OutlinedButton.icon(
+            onPressed: () {
+            },
+            icon: const Icon(Icons.add, color: Colors.blue),
+            label: const Text(
+              "Kế hoạch",
+              style: TextStyle(color: Colors.blue),
+            ),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.blue), // Màu viền nút
+            ),
           ),
-        ],
+          const SizedBox(width: 8), // Khoảng cách giữa các nút
+          OutlinedButton.icon(
+            onPressed: () {
+              //Get.to(() => CreateUrgentEvents());
+            },
+            icon: const Icon(Icons.add, color: Colors.red),
+            label: const Text(
+              "Mối nguy",
+              style: TextStyle(color: Colors.red),
+            ),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Colors.red), // Màu viền nút
+            ),
+          ),
+        ]
+            : null, // Không có actions ở các trang khác
       ),
+
       body: IndexedStack(
         index: _selectedIndex,
         children: _pages,
@@ -107,3 +150,5 @@ class _MainNavigationState extends State<MainNavigation> {
     );
   }
 }
+
+

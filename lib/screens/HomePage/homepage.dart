@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_taskscheduling_app/screens/HomePage/planslist.dart';
 import 'package:get/get.dart';
+import 'package:flutter_taskscheduling_app/screens/HomePage/activityhistory.dart';
+import 'package:flutter_taskscheduling_app/screens/HomePage/createurgentevents.dart';
 
 class HomeController extends GetxController {
   var isNotificationPressed = false.obs;  // Trạng thái của icon thông báo
@@ -11,7 +14,7 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Tạo controller để sử dụng GetX
+    //Tạo controller để sử dụng GetX
     final HomeController controller = Get.put(HomeController());
 
     return Center(
@@ -32,6 +35,48 @@ class HomeContent extends StatelessWidget {
     );
   }
 
+  // Widget buildMainNavigation(HomeController controller) {
+  //   return Scaffold(
+  //       appBar: AppBar(
+  //         title: Image.asset(
+  //           'assets/images/abstergo_banner.png',
+  //           height: 40,
+  //           fit: BoxFit.contain,
+  //         ),
+  //         backgroundColor: Colors.white,
+  //         actions: [
+  //           OutlinedButton.icon(
+  //             onPressed: () {
+  //               Get.to(() => CreateUrgentEvents());
+  //             },
+  //             icon: const Icon(Icons.add, color: Colors.blue),
+  //             label: const Text(
+  //               "Kế hoạch",
+  //               style: TextStyle(color: Colors.blue),
+  //             ),
+  //             style: OutlinedButton.styleFrom(
+  //               side: const BorderSide(color: Colors.blue), // Màu viền nút
+  //             ),
+  //           ),
+  //           const SizedBox(width: 8), // Khoảng cách giữa các nút
+  //           OutlinedButton.icon(
+  //             onPressed: () {
+  //               // Thêm logic cho nút "Mối nguy" tại đây
+  //             },
+  //             icon: const Icon(Icons.add, color: Colors.red),
+  //             label: const Text(
+  //               "Mối nguy",
+  //               style: TextStyle(color: Colors.red),
+  //             ),
+  //             style: OutlinedButton.styleFrom(
+  //               side: const BorderSide(color: Colors.red), // Màu viền nút
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //   );
+  // }
+
   /** BUILD HEADER REPORT **/
   Widget buildReportHeaderRow(HomeController controller) {
     return Row(
@@ -39,15 +84,16 @@ class HomeContent extends StatelessWidget {
         // Icon lịch sử hoạt động
         IconButton(
           onPressed: () {
-            controller.isNotificationPressed.toggle();  // Thay đổi trạng thái
+            Get.to(() => ActivityHistory());
           },
           icon: Obx(() => Icon(
             Icons.notifications,
             color: controller.isNotificationPressed.value
                 ? Colors.green
-                : Colors.redAccent,  // Đổi màu khi nhấn
+                : Colors.redAccent, // Đổi màu khi nhấn
           )),
         ),
+
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,  // Căn giữa dọc
@@ -75,7 +121,7 @@ class HomeContent extends StatelessWidget {
         // Icon danh sách kế hoạch
         IconButton(
           onPressed: () {
-            controller.isCalendarPressed.toggle();  // Thay đổi trạng thái
+            Get.to(() => PlansList());  // Thay đổi trạng thái
           },
           icon: Obx(() => Icon(
             Icons.calendar_today,

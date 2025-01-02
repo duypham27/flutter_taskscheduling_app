@@ -17,7 +17,7 @@ class LoginController extends GetxController {
         "Lỗi",
         "Vui lòng điền đầy đủ thông tin!",
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.red,
+        backgroundColor: const Color(0xFF130013),
         colorText: Colors.white,
       );
       return;
@@ -80,18 +80,27 @@ class Login extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center, // Căn giữa nội dung theo chiều dọc
             children: [
               Container(
-                width: 350,
+                width: 450,
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Image.asset(
-                      'assets/images/abstergo_industries_logo.png',
-                      // height: 60,
+                      'assets/images/abstergo_logo.png',
+                      height: 200,
                     ),
-                    const SizedBox(height: 20),
                     Text(
-                      'Chào mừng quay trở lại',
+                      'abstergo',
+                      style: TextStyle(
+                        color: const Color(0xFF000000),
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: 'assets/fonts/Montserrat.ttf',
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                    Text(
+                      'Chào mừng đến với Abstergo',
                       style: TextStyle(
                         color: const Color(0xFFFF3131),
                         fontSize: 20,
