@@ -1,6 +1,5 @@
 <h1 align="center"> Trường đại học Công nghệ thành phố Hồ Chí Minh <br/>
-    Đồ án môn học lập trình ứng dụng di động Flutter
-    
+    Đồ án môn học lập trình ứng dụng di động Flutter - 
     Ứng Dụng Quản Lý Công Việc Abstergo Dựa Theo Mối Nguy
 </h1>
 
