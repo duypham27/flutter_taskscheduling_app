@@ -97,7 +97,7 @@ class _MainNavigationState extends State<MainNavigation> {
           const SizedBox(width: 8), // Khoảng cách giữa các nút
           OutlinedButton.icon(
             onPressed: () {
-              //Get.to(() => CreateUrgentEvents());
+              Get.to(() => CreateUrgentEvents());
             },
             icon: const Icon(Icons.add, color: Colors.red),
             label: const Text(

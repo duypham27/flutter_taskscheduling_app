@@ -21,8 +21,6 @@ class QRCodePage extends StatelessWidget {
 }
 
 
-
-
 /** NEED FIX QRSCANNER **/
 // class QRCodePage extends StatefulWidget {
 //   const QRCodePage({super.key});
@@ -64,7 +62,6 @@ class QRCodePage extends StatelessWidget {
 //   Widget build(BuildContext context) {
 //     return Scaffold(
 //       appBar: AppBar(
-//         title: Text("QR Code Scanner"),
 //       ),
 //       body: Column(
 //         children: [

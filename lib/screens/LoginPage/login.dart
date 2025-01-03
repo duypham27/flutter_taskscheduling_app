@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'signup.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter_taskscheduling_app/services/APIServices.dart';
-import 'package:flutter_taskscheduling_app/screens/HomePage/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_taskscheduling_app/main.dart';
 
@@ -72,7 +71,7 @@ class Login extends StatelessWidget {
     final LoginController login = Get.put(LoginController());
 
     return Scaffold(
-      backgroundColor: Colors.red.shade50,
+      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -102,7 +101,7 @@ class Login extends StatelessWidget {
                     Text(
                       'Chào mừng đến với Abstergo',
                       style: TextStyle(
-                        color: const Color(0xFFFF3131),
+                        color: const Color(0xFF000000),
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
@@ -190,7 +189,7 @@ class Login extends StatelessWidget {
                         loginController.login(); // Gọi phương thức login từ instance
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red.shade400,
+                        backgroundColor: Colors.red,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),

@@ -73,7 +73,7 @@ class RegistrationPage extends StatelessWidget {
     final RegistrationController controller = Get.put(RegistrationController());
 
     return Scaffold(
-      backgroundColor: Colors.red.shade50,
+      backgroundColor: Colors.white,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -85,7 +85,7 @@ class RegistrationPage extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.redAccent,
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 30),
@@ -135,7 +135,7 @@ class RegistrationPage extends StatelessWidget {
                     : ElevatedButton(
                   onPressed: controller.register,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: Colors.red,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 100,
                       vertical: 16,

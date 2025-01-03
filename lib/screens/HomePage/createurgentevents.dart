@@ -1,20 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_quill/flutter_quill.dart' as quill;
 import 'package:get/get.dart';
 
 class UrgentEventsController extends GetxController {
-  var donVi = "".obs;
-  var khuVuc = "".obs;
   var mucDo = "".obs;
-  var phamVi = "".obs;
   var nguoiTuanTra = "".obs;
   var moTaMoiNguy = "".obs;
   var huongGiaiQuyet = "".obs;
 
   void resetFields() {
-    donVi.value = "";
-    khuVuc.value = "";
     mucDo.value = "";
-    phamVi.value = "";
     nguoiTuanTra.value = "";
     moTaMoiNguy.value = "";
     huongGiaiQuyet.value = "";
@@ -47,132 +42,78 @@ class CreateUrgentEvents extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // DropdownButtonFormField cho Đơn vị
-              Obx(
-                    () => DropdownButtonFormField<String>(
-                  value: controller.donVi.value.isNotEmpty ? controller.donVi.value : null,
-                  decoration: const InputDecoration(
-                    labelText: "Đơn vị (*)",
-                    border: OutlineInputBorder(),
-                  ),
-                  items: ["PSP"].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    controller.donVi.value = value ?? "";
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              // DropdownButtonFormField cho Khu vực
-              Obx(
-                    () => DropdownButtonFormField<String>(
-                  value: controller.khuVuc.value.isNotEmpty ? controller.khuVuc.value : null,
-                  decoration: const InputDecoration(
-                    labelText: "Khu vực",
-                    border: OutlineInputBorder(),
-                  ),
-                  items: ["5S"].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    controller.khuVuc.value = value ?? "";
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-
               // DropdownButtonFormField cho Mức độ
-              Obx(
-                    () => DropdownButtonFormField<String>(
+              Obx(() {
+                return DropdownButtonFormField<String>(
                   value: controller.mucDo.value.isNotEmpty ? controller.mucDo.value : null,
                   decoration: const InputDecoration(
                     labelText: "Mức độ (*)",
                     border: OutlineInputBorder(),
                   ),
-                  items: ["Cao", "Trung bình", "Thấp"].map((String value) {
+                  items: [
+                    {"value": "A", "title": "Cao"},
+                    {"value": "B", "title": "Trung Bình"},
+                    {"value": "C", "title": "Thấp"},
+                  ].map((Map<String, String> item) {
                     return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
+                      value: item["value"],
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(item["value"] ?? "", style: const TextStyle(fontWeight: FontWeight.bold)),
+                          Text(item["title"] ?? "", style: const TextStyle(fontSize: 12, color: Colors.grey)),
+                        ],
+                      ),
                     );
                   }).toList(),
                   onChanged: (value) {
                     controller.mucDo.value = value ?? "";
                   },
-                ),
-              ),
-              const SizedBox(height: 16),
+                );
+              }),
 
-              // DropdownButtonFormField cho Phạm vi
-              Obx(
-                    () => DropdownButtonFormField<String>(
-                  value: controller.phamVi.value.isNotEmpty ? controller.phamVi.value : null,
-                  decoration: const InputDecoration(
-                    labelText: "Phạm vi (*)",
-                    border: OutlineInputBorder(),
-                  ),
-                  items: ["5S"].map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  onChanged: (value) {
-                    controller.phamVi.value = value ?? "";
-                  },
-                ),
-              ),
               const SizedBox(height: 16),
 
               // TextFormField cho Người tuần tra
-              Obx(
-                    () => TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "Người tuần tra (*)",
-                    border: OutlineInputBorder(),
-                  ),
-                  onChanged: (value) {
-                    controller.nguoiTuanTra.value = value;
-                  },
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: "Người tuần tra (*)",
+                  border: OutlineInputBorder(),
                 ),
+                onChanged: (value) {
+                  controller.nguoiTuanTra.value = value;
+                },
               ),
+
               const SizedBox(height: 16),
 
               // TextFormField cho Mô tả mối nguy
-              Obx(
-                    () => TextFormField(
-                  decoration: const InputDecoration(
+              Obx(() {
+                return TextFormField(
+                  decoration: InputDecoration(
                     labelText: "Mô tả mối nguy (*)",
-                    border: OutlineInputBorder(),
-                    helperText: "0 / 500 ký tự",
+                    border: const OutlineInputBorder(),
+                    helperText: "${controller.moTaMoiNguy.value.length} / 500 ký tự",
                   ),
                   maxLength: 500,
                   onChanged: (value) {
                     controller.moTaMoiNguy.value = value;
                   },
-                ),
-              ),
+                );
+              }),
+
               const SizedBox(height: 16),
 
               // TextFormField cho Hướng giải quyết
-              Obx(
-                    () => TextFormField(
-                  decoration: const InputDecoration(
-                    labelText: "Hướng giải quyết",
-                    border: OutlineInputBorder(),
-                  ),
-                  maxLines: 3,
-                  onChanged: (value) {
-                    controller.huongGiaiQuyet.value = value;
-                  },
+              TextFormField(
+                decoration: const InputDecoration(
+                  labelText: "Hướng giải quyết",
+                  border: OutlineInputBorder(),
                 ),
+                maxLines: 3,
+                onChanged: (value) {
+                  controller.huongGiaiQuyet.value = value;
+                },
               ),
             ],
           ),
