@@ -6,7 +6,7 @@
 <h1 align ="center"> Chào mừng đến với Abstergo Industries</h1>
 
 <p align="center">
-    <img src="./images/abstergo_banner.png">
+    <img src="./assets/images/abstergo_banner.png">
 </p>
 
 
