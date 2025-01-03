@@ -5,11 +5,11 @@ import 'package:flutter_taskscheduling_app/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class ApiService {
   static const String baseUrl = "http://10.0.2.2/API_Mobile";
-  //static const String readDeviceUrl = "http://192.168.155.238:80/API_Mobile";
-  static const String readDeviceUrl = "http://192.168.1.3:80/API_Mobile";
+  static const String readDeviceUrl = "http://192.168.155.238:80/API_Mobile";
+  //static const String readDeviceUrl = "http://192.168.1.3:80/API_Mobile";
   // Phương thức gửi yêu cầu POST để đăng nhập
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final url = Uri.parse("$baseUrl/login");
+    final url = Uri.parse("$readDeviceUrl/login");
     final headers = {"Content-Type": "application/x-www-form-urlencoded"};
     final body = {
       "email": email,
@@ -42,7 +42,7 @@ class ApiService {
   }
   Future<Map<String, dynamic>> signup(UserModel user,String password) async {
 
-    final url = Uri.parse("$baseUrl/signup");
+    final url = Uri.parse("$readDeviceUrl/signup");
     final headers = {
       "Content-Type": "application/x-www-form-urlencoded",
     };
