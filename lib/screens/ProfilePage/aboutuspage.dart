@@ -11,12 +11,35 @@ class AbstergoInfoPage extends StatelessWidget {
         title: const Text('Về Abstergo'),
         backgroundColor: Colors.redAccent,
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-          },
-          child: const Text('Abstergo'),
-        ),
+      body: ListView(
+        children: [
+          // Mục Phiên bản
+          ListTile(
+            title: Text('Phiên bản'),
+            subtitle: Text('1.2.8'),
+            onTap: () {
+
+            },
+          ),
+          const Divider(thickness: 0.2, color: Colors.grey),
+          // Mục Hướng dẫn sử dụng
+          ListTile(
+            title: Text('Hướng dẫn sử dụng'),
+            trailing: Icon(Icons.open_in_new_outlined),
+            onTap: () {
+
+            },
+          ),
+          const Divider(thickness: 0.2, color: Colors.grey),
+          // Mục Đánh giá ứng dụng
+          ListTile(
+            title: Text('Đánh giá ứng dụng'),
+            trailing: Icon(Icons.arrow_forward_ios),
+            onTap: () {
+
+            },
+          ),
+        ],
       ),
     );
   }

@@ -23,7 +23,7 @@ class SettingsPage extends StatelessWidget {
               ),
             ),
           ),
-
+          const Divider(thickness: 0.2, color: Colors.grey),
           // Mục Ngôn ngữ
           ListTile(
             leading: Icon(Icons.language),
@@ -52,10 +52,10 @@ class SettingsPage extends StatelessWidget {
               style: TextStyle(
                 color: Colors.redAccent, // Đặt màu cho văn bản
               ),
-              // style: Theme.of(context).textTheme.headline6,
+
             ),
           ),
-
+          const Divider(thickness: 0.2, color: Colors.grey),
           // Mục Xoá tài khoản
           ListTile(
             leading: Icon(Icons.person_off_outlined),
