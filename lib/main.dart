@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/signup', page: () => const RegistrationPage()),
         GetPage(name: '/home', page: () => const MainNavigation()),
         GetPage(name: '/qrcode', page: () => const QRCodePage()),
-        GetPage(name: '/profile', page: () => const ProfilePage()),
+        GetPage(name: '/profile', page: () =>  ProfilePage()),
       ],
     );
   }
@@ -49,7 +49,7 @@ class _MainNavigationState extends State<MainNavigation> {
   final List<Widget> _pages = [
     const HomeContent(),
     const QRCodePage(),
-    const ProfilePage(),
+     ProfilePage(),
   ];
 
   void _onItemTapped(int index) {

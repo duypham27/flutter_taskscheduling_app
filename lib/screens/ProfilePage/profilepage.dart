@@ -6,8 +6,25 @@ import 'package:flutter_taskscheduling_app/screens/ProfilePage/informationpage.d
 import 'package:flutter_taskscheduling_app/screens/ProfilePage/settingpage.dart';
 import 'package:flutter_taskscheduling_app/screens/ProfilePage/activityhistorypage.dart';
 
+class UrgentEventsController extends GetxController {
+  var mucDo = "".obs;
+  var nguoiTuanTra = "".obs;
+  var moTaMoiNguy = "".obs;
+  var huongGiaiQuyet = "".obs;
+
+  void resetFields() {
+    mucDo.value = "";
+    nguoiTuanTra.value = "";
+    moTaMoiNguy.value = "";
+    huongGiaiQuyet.value = "";
+  }
+}
+
+
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({super.key});
+   ProfilePage({super.key});
+
+  final UrgentEventsController controller = Get.put(UrgentEventsController());
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +33,8 @@ class ProfilePage extends StatelessWidget {
         children: [
           ListTile(
             leading: const Icon(Icons.person, color: Colors.redAccent),
-            title: const Text('Thông tin cá nhân'),
+            title: const Text('CMD'
+                'Thông tin cá nhân'),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
               Get.to(() => const InformationPage());
