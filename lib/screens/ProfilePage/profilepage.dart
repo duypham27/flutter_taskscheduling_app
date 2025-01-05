@@ -55,7 +55,7 @@ class ProfilePage extends StatelessWidget {
             title: const Text('Cài đặt'),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
-              Get.to(() => const SettingsPage());
+              Get.to(() =>  SettingsPage());
             },
           ),
           const Divider(),
