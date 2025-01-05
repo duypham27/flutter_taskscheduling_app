@@ -46,7 +46,7 @@ class ProfilePage extends StatelessWidget {
             title: const Text('Lịch sử hoạt động'),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {
-              Get.to(() => const ActivityHistoryPage());
+              Get.to(() =>  ActivityHistoryPage());
             },
           ),
           const Divider(),
