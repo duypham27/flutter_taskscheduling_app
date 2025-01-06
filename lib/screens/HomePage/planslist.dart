@@ -1,12 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:flutter_taskscheduling_app/services/APIServices.dart';
 
 class PlansListController extends GetxController {
   var isFilterPressed = false.obs; // Trạng thái của icon lọc
   var searchText = "".obs;
   var selectedStatus = "Tất cả trạng thái".obs; // Trạng thái đã chọn
   var selectedDate = DateTime.now().obs; // Ngày đã chọn
+
+  var tasks = <Map<String, dynamic>>[].obs; // Lưu kế hoạch từ API
+  var isLoading = false.obs; // Trạng thái loading
+
+  // Hàm để lấy danh sách task từ API
+  Future<void> getTasks(String? search, String? status) async {
+    try {
+      //isLoading.value = true;
+      // Gọi API listTask từ ApiService với tham số search, status, due_date
+      var taskList = await ApiService().listTask(
+          search, status
+      );
+
+      if (taskList != null) {
+        tasks.value = (taskList as List).map((item) {
+          var task = Map<String, dynamic>.from(item);
+          task['id'] = task['id'].toString(); // Ép kiểu id thành String
+          return task;
+        }).toList();
+      } else {
+        Get.snackbar(
+          'Lỗi',
+          'Không thể lấy danh sách công việc!',
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      debugPrint('Lỗi: $e'); // In lỗi ra console
+      Get.snackbar(
+        'Lỗi',
+        'Có lỗi xảy ra khi lấy dữ liệu.',
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
+  }
+
 }
 
 class PlansList extends StatelessWidget {
@@ -16,7 +57,8 @@ class PlansList extends StatelessWidget {
   Widget build(BuildContext context) {
     // Tạo controller để sử dụng GetX
     final PlansListController controller = Get.put(PlansListController());
-
+    // Gọi phương thức fetchTasks() khi giao diện được tải
+    controller.getTasks(null, null);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Danh Sách Kế Hoạch"),
@@ -35,7 +77,14 @@ class PlansList extends StatelessWidget {
               const SizedBox(height: 16),
               buildSearchBar(controller),// Gọi hàm tạo lịch và bộ lọc trạng thái
               const SizedBox(height: 16),
-              buildHistoryList(),
+              //buildHistoryList(),
+              // Sử dụng Obx để lắng nghe sự thay đổi của tasks và hiển thị danh sách kế hoạch
+              Obx(() {
+                if (controller.isLoading.value) {
+                  return const CircularProgressIndicator(); // Hiển thị loading
+                }
+                return buildHistoryList(controller.tasks);
+              }),
             ],
           ),
         ),
@@ -161,41 +210,41 @@ class PlansList extends StatelessWidget {
 
 
   /** BUILD PLANS LIST **/
-  Widget buildHistoryList() {
-    final List<Map<String, dynamic>> plans = [
-      {
-        "id": "#AVNTA00825",
-        "name": "KH tuần tra",
-        "startDate": "11/12/2024",
-        "status": "Huỷ",
-        "statusColor": Colors.red,
-        "avatar": "https://via.placeholder.com/40"
-      },
-      {
-        "id": "#AVNTA00483",
-        "name": "Kế hoạch A BC",
-        "startDate": "05/12/2024",
-        "status": "Đang xử lý",
-        "statusColor": Colors.orange,
-        "avatar": "https://via.placeholder.com/40"
-      },
-      {
-        "id": "#AVNTA00823",
-        "name": "Kế hoạch test",
-        "startDate": "11/12/2024",
-        "status": "Hoàn thành",
-        "statusColor": Colors.green,
-        "avatar": "https://via.placeholder.com/40"
-      },
-      {
-        "id": "#AVNTA00790",
-        "name": "Kế hoạch a",
-        "startDate": "11/12/2024",
-        "status": "Đang xử lý",
-        "statusColor": Colors.orange,
-        "avatar": "https://via.placeholder.com/40"
-      },
-    ];
+  Widget buildHistoryList(RxList<Map<String, dynamic>> plans) {
+    // final List<Map<String, dynamic>> plans = [
+    //   {
+    //     "id": "#AVNTA00825",
+    //     "name": "KH tuần tra",
+    //     "startDate": "11/12/2024",
+    //     "status": "Huỷ",
+    //     "statusColor": Colors.red,
+    //     "avatar": "https://via.placeholder.com/40"
+    //   },
+    //   {
+    //     "id": "#AVNTA00483",
+    //     "name": "Kế hoạch A BC",
+    //     "startDate": "05/12/2024",
+    //     "status": "Đang xử lý",
+    //     "statusColor": Colors.orange,
+    //     "avatar": "https://via.placeholder.com/40"
+    //   },
+    //   {
+    //     "id": "#AVNTA00823",
+    //     "name": "Kế hoạch test",
+    //     "startDate": "11/12/2024",
+    //     "status": "Hoàn thành",
+    //     "statusColor": Colors.green,
+    //     "avatar": "https://via.placeholder.com/40"
+    //   },
+    //   {
+    //     "id": "#AVNTA00790",
+    //     "name": "Kế hoạch a",
+    //     "startDate": "11/12/2024",
+    //     "status": "Đang xử lý",
+    //     "statusColor": Colors.orange,
+    //     "avatar": "https://via.placeholder.com/40"
+    //   },
+    // ];
 
     return Expanded(
       child: ListView.builder(
@@ -204,8 +253,8 @@ class PlansList extends StatelessWidget {
           final plan = plans[index];
           return buildPlanCard(
             plan["id"] ?? "",
-            plan["name"] ?? "",
-            plan["startDate"] ?? "",
+            plan["title"] ?? "",
+            plan["due_date"] ?? "",
             plan["status"] ?? "",
             plan["statusColor"] ?? Colors.grey,
             plan["avatar"] ?? "",
