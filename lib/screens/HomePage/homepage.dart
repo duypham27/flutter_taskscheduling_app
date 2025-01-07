@@ -101,15 +101,15 @@ class HomeContent extends StatelessWidget {
       children: [
 
         // Icon lịch sử hoạt động
-        IconButton(
-          onPressed: () {
-
-          },
-          icon: Obx(() => Icon(
-            Icons.clear,
-            color: Colors.transparent,
-          )),
-        ),
+        // IconButton(
+        //   onPressed: () {
+        //
+        //   },
+        //   icon: Obx(() => Icon(
+        //     Icons.clear,
+        //     color: Colors.transparent,
+        //   )),
+        // ),
 
         Expanded(
           child: Column(

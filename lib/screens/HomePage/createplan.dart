@@ -1,11 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_taskscheduling_app/main.dart';
+import 'package:intl/intl.dart';
+import 'package:flutter_taskscheduling_app/services/APIServices.dart';
 
 class CreatePlanController extends GetxController {
   var planName = "".obs;
   var planDescription = "".obs;
   var startDate = "".obs; // Đổi từ deadline -> startDate
+
+  var isLoading = false.obs;
+
+  // Hàm để định dạng ngày thành yyyy/MM/dd trước khi gửi API
+  String getFormattedDate(String inputDate) {
+    try {
+      // Chuyển từ chuỗi input (1/2/2025) sang DateTime
+      final parsedDate = DateFormat('d/M/yyyy').parse(inputDate);
+
+      // Chuyển sang định dạng yyyy/MM/dd
+      final formatter = DateFormat('yyyy-MM-dd');
+      return formatter.format(parsedDate);
+    } catch (e) {
+      throw Exception("Định dạng ngày không hợp lệ. Vui lòng nhập đúng định dạng.");
+    }
+  }
+  Future<void> submitPlan() async {
+    if (planName.value.isEmpty ||
+        planDescription.value.isEmpty ||
+        startDate.value.isEmpty) {
+      Get.snackbar(
+        "Lỗi",
+        "Vui lòng điền đầy đủ thông tin.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    try {
+      isLoading.value = true;
+
+      // Định dạng lại startDate
+      final formattedStartDate = getFormattedDate(startDate.value);
+
+      final result = await ApiService().addTask(
+        planName.value,
+        planDescription.value,
+        formattedStartDate,
+      );
+
+      if (result['result'] == 1) {
+        Get.snackbar(
+          "Thành công",
+          "Kế hoạch đã được thêm thành công.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+        resetFields();
+        Get.to(() => UploadedPlanPage());
+      } else {
+        Get.snackbar(
+          "Lỗi",
+          result['message'] ?? "Có lỗi xảy ra.",
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: Colors.red,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        "Lỗi",
+        "Không thể thêm kế hoạch: $e",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      isLoading.value = false;
+    }
+  }
 
   void resetFields() {
     planName.value = "";
@@ -18,6 +93,7 @@ class CreatePlanController extends GetxController {
         planDescription.value.isNotEmpty &&
         startDate.value.isNotEmpty;
   }
+
 }
 
 class CreatePlan extends StatelessWidget {
@@ -120,17 +196,18 @@ class CreatePlan extends StatelessWidget {
                       ),
                     ),
                     onPressed: () async {
-                      if (controller.isFormValid()) {
-                        Get.to(() => UploadedPlanPage());
-                      } else {
-                        Get.snackbar(
-                          "Thông báo",
-                          "Thông tin tạo kế hoạch không đầy đủ",
-                          snackPosition: SnackPosition.BOTTOM,
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
-                        );
-                      }
+                      // if (controller.isFormValid()) {
+                      //   Get.to(() => UploadedPlanPage());
+                      // } else {
+                      //   Get.snackbar(
+                      //     "Thông báo",
+                      //     "Thông tin tạo kế hoạch không đầy đủ",
+                      //     snackPosition: SnackPosition.BOTTOM,
+                      //     backgroundColor: Colors.red,
+                      //     colorText: Colors.white,
+                      //   );
+                      // }
+                      await controller.submitPlan();
                     },
                     child: const Center(
                       child: Text("Gửi"),

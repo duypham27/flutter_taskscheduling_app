@@ -7,10 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ApiService {
   static const String baseUrl = "http://10.0.2.2/API_Mobile";
   //static const String readDeviceUrl = "http://192.168.155.238:80/API_Mobile";
-  //static const String readDeviceUrl = "http://192.168.1.3:80/API_Mobile";
+  static const String readDeviceUrl = "http://192.168.1.3:80/API_Mobile";
   // Phương thức gửi yêu cầu POST để đăng nhập
   Future<Map<String, dynamic>> login(String email, String password) async {
-    final url = Uri.parse("$baseUrl/login");
+    final url = Uri.parse("$readDeviceUrl/login");
     final headers = {"Content-Type": "application/x-www-form-urlencoded"};
     final body = {
       "email": email,
@@ -30,15 +30,15 @@ class ApiService {
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('access_token', accessToken);
           // Test ccessToken vào SharedPreferences
-          Get.snackbar(
-            "Đăng nhập thành công",
-            "AccessToken của bạn: $accessToken",
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: Colors.green,
-            colorText: Colors.white,
-            duration: const Duration(seconds: 5),
-          );
-          /////
+          // Get.snackbar(
+          //   "Đăng nhập thành công",
+          //   "AccessToken của bạn: $accessToken",
+          //   snackPosition: SnackPosition.BOTTOM,
+          //   backgroundColor: Colors.green,
+          //   colorText: Colors.white,
+          //   duration: const Duration(seconds: 5),
+          // );
+          // ///
 
           return responseData; // Trả về dữ liệu từ API
         } else {
@@ -53,7 +53,7 @@ class ApiService {
   }
   Future<Map<String, dynamic>> signup(UserModel user,String password) async {
 
-    final url = Uri.parse("$baseUrl/signup");
+    final url = Uri.parse("$readDeviceUrl/signup");
     final headers = {
       "Content-Type": "application/x-www-form-urlencoded",
     };
@@ -79,15 +79,61 @@ class ApiService {
       throw Exception("API Error: $e");
     }
   }
+  ///AddTask
+  Future<Map<String, dynamic>> addTask(String title, String description, String due_date) async {
+    final url = Uri.parse("$readDeviceUrl/tasks");
+    //final headers = {"Content-Type": "application/x-www-form-urlencoded"};
+    final body = {
+      "title": title,
+      "description": description,
+      "due_date": due_date, //yyyy-MM-dd
+
+    };
+    try {
+      // Lấy accessToken từ SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      final accessToken = prefs.getString('access_token');
+
+      if (accessToken == null) {
+        throw Exception("Access token không tồn tại. Vui lòng đăng nhập lại.");
+      }
+      // Thêm accessToken vào header
+      final headers = {
+        'Authorization': accessToken,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      };
+      // Gửi request POST đến API
+      final response = await http.post(url, headers: headers,body: body);
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        if (responseData['result'] == 1) {
+          return responseData; // Trả về dữ liệu từ API
+        } else {
+          throw Exception("Lỗi từ API: Không có dữ liệu.");
+        }
+      } else {
+        throw Exception("Error: ${response.statusCode} - ${response.reasonPhrase}");
+      }
+    } catch (e) {
+      throw Exception("API Error: $e");
+    }
+
+
+
+  }
+
+
+
 
   // Lay danh sach task
+
 
   Future<List<Map<String, dynamic>>> listTask(
       String? search,
       String? status,
 
       ) async{
-    final urlString = Uri.parse("$baseUrl/tasks");
+    final urlString = Uri.parse("$readDeviceUrl/tasks");
     Map<String, String> queryParams = {};
 
     if (search != null && search.isNotEmpty) {
@@ -116,6 +162,13 @@ class ApiService {
         'Content-Type': 'application/json',
       };
 
+      // Get.snackbar(
+      //   "Headers", // Tiêu đề
+      //   headers.toString(), // Nội dung hiển thị
+      //   snackPosition: SnackPosition.BOTTOM, // Vị trí hiển thị
+      //   duration: Duration(seconds: 3), // Thời gian hiển thị
+      // );
+
       // Gửi request GET đến API
       final response = await http.get(url, headers: headers);
 
@@ -132,14 +185,7 @@ class ApiService {
         // Gộp danh sách mô tả thành chuỗi
         var descriptionText = descriptions.join(', ');
 
-        Get.snackbar(
-          'Thông tin JSON',
-          'Result: $result, Quantity: $quantity, Descriptions: $descriptionText',
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.blueAccent,
-          colorText: Colors.white,
-          duration: Duration(seconds: 5), // Thời gian hiển thị
-        );
+
         // Xử lý và trả về danh sách Task
         if (responseData['result'] == 1) {
           // Trả về danh sách task từ mảng 'data'
