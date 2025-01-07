@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 
 import 'package:flutter_taskscheduling_app/screens/HomePage/homepage.dart';
 import 'package:flutter_taskscheduling_app/screens/HomePage/createurgentevents.dart';
+import 'package:flutter_taskscheduling_app/screens/HomePage/createplan.dart';
 import 'package:flutter_taskscheduling_app/screens/ProfilePage/profilepage.dart';
 import 'screens/qrcode.dart';
 import 'package:flutter_taskscheduling_app/screens/LoginPage/login.dart';
@@ -84,7 +85,7 @@ class _MainNavigationState extends State<MainNavigation> {
             ? [
           OutlinedButton.icon(
             onPressed: () {
-              //Get.to(() => CreatePlanEvents());
+              Get.to(() => CreatePlan());
             },
             icon: const Icon(Icons.add, color: Colors.blue),
             label: const Text(

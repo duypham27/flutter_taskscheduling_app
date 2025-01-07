@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_taskscheduling_app/screens/HomePage/planslist.dart';
 import 'package:get/get.dart';
 import 'package:flutter_taskscheduling_app/screens/HomePage/activityhistory.dart';
-import 'package:flutter_taskscheduling_app/screens/HomePage/createurgentevents.dart';
 
 class HomeController extends GetxController {
   var isNotificationPressed = false.obs;  // Trạng thái của icon thông báo
@@ -14,7 +13,7 @@ class HomeContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //Tạo controller để sử dụng GetX
+    // Tạo controller để sử dụng GetX
     final HomeController controller = Get.put(HomeController());
 
     return Center(
@@ -28,7 +27,10 @@ class HomeContent extends StatelessWidget {
           children: [
             buildReportHeaderRow(controller),
             const SizedBox(height: 16),
-            buildReportCard(),// Gọi hàm xây dựng Row ở đây
+            buildReportCard(), // Gọi hàm xây dựng Row ở đây
+            const SizedBox(height: 16),
+            // Thêm phần "Kế hoạch" từ PlansList vào đây
+            buildPlansSection(controller), // Gọi hàm hiển thị danh sách kế hoạch
           ],
         ),
       ),
@@ -92,31 +94,30 @@ class HomeContent extends StatelessWidget {
     );
   }
 
-
-  /** BUILD PLAN **/
-  Widget buildPlanRow(HomeController controller) {
+  /** BUILD PLAN SECTION **/
+  // Đây là phần mới bạn thêm vào để hiển thị kế hoạch
+  Widget buildPlansSection(HomeController controller) {
     return Row(
       children: [
-        // Icon thông báo
+
+        // Icon lịch sử hoạt động
         IconButton(
           onPressed: () {
-            controller.isNotificationPressed.toggle();  // Thay đổi trạng thái
+
           },
           icon: Obx(() => Icon(
-            Icons.notifications,
-            color: controller.isNotificationPressed.value
-                ? Colors.green
-                : Colors.redAccent,  // Đổi màu khi nhấn
+            Icons.clear,
+            color: Colors.transparent,
           )),
         ),
-        // Phần tiêu đề Báo Cáo và tháng/năm được căn giữa
+
         Expanded(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,  // Căn giữa dọc
             crossAxisAlignment: CrossAxisAlignment.center, // Căn giữa ngang
             children: const [
               Text(
-                "BÁO CÁO",
+                "KẾ HOẠCH",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -134,10 +135,10 @@ class HomeContent extends StatelessWidget {
             ],
           ),
         ),
-        // Icon lịch trình
+        // Icon danh sách kế hoạch
         IconButton(
           onPressed: () {
-            controller.isCalendarPressed.toggle();  // Thay đổi trạng thái
+            Get.to(() => PlansList());  // Thay đổi trạng thái
           },
           icon: Obx(() => Icon(
             Icons.calendar_today,
