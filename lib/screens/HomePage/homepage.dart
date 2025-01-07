@@ -35,48 +35,6 @@ class HomeContent extends StatelessWidget {
     );
   }
 
-  // Widget buildMainNavigation(HomeController controller) {
-  //   return Scaffold(
-  //       appBar: AppBar(
-  //         title: Image.asset(
-  //           'assets/images/abstergo_banner.png',
-  //           height: 40,
-  //           fit: BoxFit.contain,
-  //         ),
-  //         backgroundColor: Colors.white,
-  //         actions: [
-  //           OutlinedButton.icon(
-  //             onPressed: () {
-  //               Get.to(() => CreateUrgentEvents());
-  //             },
-  //             icon: const Icon(Icons.add, color: Colors.blue),
-  //             label: const Text(
-  //               "Kế hoạch",
-  //               style: TextStyle(color: Colors.blue),
-  //             ),
-  //             style: OutlinedButton.styleFrom(
-  //               side: const BorderSide(color: Colors.blue), // Màu viền nút
-  //             ),
-  //           ),
-  //           const SizedBox(width: 8), // Khoảng cách giữa các nút
-  //           OutlinedButton.icon(
-  //             onPressed: () {
-  //               // Thêm logic cho nút "Mối nguy" tại đây
-  //             },
-  //             icon: const Icon(Icons.add, color: Colors.red),
-  //             label: const Text(
-  //               "Mối nguy",
-  //               style: TextStyle(color: Colors.red),
-  //             ),
-  //             style: OutlinedButton.styleFrom(
-  //               side: const BorderSide(color: Colors.red), // Màu viền nút
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //   );
-  // }
-
   /** BUILD HEADER REPORT **/
   Widget buildReportHeaderRow(HomeController controller) {
     return Row(

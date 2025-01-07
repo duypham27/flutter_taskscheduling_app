@@ -40,7 +40,8 @@ dependencies:
   get: ^4.6.6
   http: ^1.2.2
   dio: ^5.7.0
-  flutter_quill: ^10.8.5
+  screenshot: ^3.0.0
+  image_picker: ^1.1.2
   shared_preferences: ^2.3.4
 
 dev_dependencies:

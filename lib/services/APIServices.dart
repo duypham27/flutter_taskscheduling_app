@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 class ApiService {
-  //static const String readDeviceUrl = "http://10.0.2.2/API_Mobile";
+  //static const String baseUrl = "http://10.0.2.2/API_Mobile";
   //static const String readDeviceUrl = "http://192.168.155.238:80/API_Mobile";
   static const String readDeviceUrl = "http://192.168.1.3:80/API_Mobile";
   // Phương thức gửi yêu cầu POST để đăng nhập
